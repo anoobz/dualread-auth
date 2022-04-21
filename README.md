@@ -16,12 +16,12 @@ Dualread is a foreign language learning web application. The main focus of the a
 
 ## Project technologies
 
-Front-end technologies:
+Front-end:
 
 - Typescript
 - React.js
 
-Back-end technologies:
+Back-end:
 
 - Golang
 - PostgreSQL

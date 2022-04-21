@@ -12,6 +12,6 @@ CREATE TABLE IF NOT EXISTS users(
 );
 CREATE TABLE IF NOT EXISTS refresh_token (
     id uuid PRIMARY KEY,
-    token_string varchar (215),
+    token_string varchar (250),
     expires BIGINT
 )

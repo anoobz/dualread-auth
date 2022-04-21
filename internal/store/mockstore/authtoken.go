@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/anoobz/dualread/auth/internal/model"
+	"github.com/anoobz/dualread/auth/internal/store"
 )
 
 type MockAuthTokenRepo struct {
@@ -36,6 +37,22 @@ func (r *MockAuthTokenRepo) GetById(id string) (*model.AuthToken, error) {
 	}
 
 	return nil, errors.New("sql: no rows in result set")
+}
+
+func (r *MockAuthTokenRepo) GetPage(page uint64) ([]*model.AuthToken, error) {
+	if len(r.authTokens) <= int(page*store.PAGE_COUNT) {
+		return nil, errors.New("insufficient token count")
+	}
+
+	tokens := []*model.AuthToken{}
+	for i := page * store.PAGE_COUNT; i < (page+1)*store.PAGE_COUNT; i++ {
+		if i >= uint64(len(r.authTokens)) {
+			break
+		}
+		tokens = append(tokens, r.authTokens[i])
+	}
+
+	return tokens, nil
 }
 
 func (r *MockAuthTokenRepo) Delete(id string) error {

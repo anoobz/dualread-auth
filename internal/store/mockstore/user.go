@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/anoobz/dualread/auth/internal/model"
+	"github.com/anoobz/dualread/auth/internal/store"
 )
 
 type MockUserRepo struct {
@@ -43,6 +44,22 @@ func (r *MockUserRepo) GetByEmail(email string) (*model.User, error) {
 
 func (r *MockUserRepo) GetAll() ([]*model.User, error) {
 	return r.users, nil
+}
+
+func (r *MockUserRepo) GetPage(page uint64) ([]*model.User, error) {
+	if len(r.users) <= int(page*store.PAGE_COUNT) {
+		return nil, errors.New("insufficient user count")
+	}
+
+	users := []*model.User{}
+	for i := page * store.PAGE_COUNT; i < (page+1)*store.PAGE_COUNT; i++ {
+		if i >= uint64(len(r.users)) {
+			break
+		}
+		users = append(users, r.users[i])
+	}
+
+	return users, nil
 }
 
 func (r *MockUserRepo) Insert(

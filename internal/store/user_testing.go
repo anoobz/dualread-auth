@@ -3,6 +3,7 @@ package store
 import (
 	"testing"
 
+	"github.com/anoobz/dualread/auth/internal/model"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -63,6 +64,46 @@ func TestStore_GetUserByEmail(t *testing.T, s Store) {
 			assert.EqualValues(t, test_user, retrievedUser)
 		} else {
 			assert.Equal(t, tc.errorMsg, err.Error())
+		}
+	}
+}
+
+func TestStore_GetUserPage(t *testing.T, s Store) {
+
+	testUsers := CreateTestUser(t, s, 25, false)
+
+	testCases := []struct {
+		name             string
+		pageId           uint64
+		expectedErrorMsg string
+		expectedUsers    []*model.User
+	}{
+		{
+			name:             "first page",
+			pageId:           0,
+			expectedErrorMsg: "",
+			expectedUsers:    testUsers[0 : 1*PAGE_COUNT],
+		},
+		{
+			name:             "not full last page",
+			pageId:           1,
+			expectedErrorMsg: "",
+			expectedUsers:    testUsers[1*PAGE_COUNT:],
+		},
+		{
+			name:             "invalid page",
+			pageId:           999,
+			expectedErrorMsg: "insufficient user count",
+			expectedUsers:    nil,
+		},
+	}
+
+	for _, tc := range testCases {
+		users, err := s.User().GetPage(tc.pageId)
+		if tc.expectedErrorMsg == "" {
+			assert.Equal(t, tc.expectedUsers, users, tc.name)
+		} else {
+			assert.Equal(t, tc.expectedErrorMsg, err.Error(), tc.name)
 		}
 	}
 }

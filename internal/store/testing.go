@@ -2,8 +2,6 @@ package store
 
 import (
 	"fmt"
-	"os"
-	"strconv"
 	"testing"
 	"time"
 
@@ -21,16 +19,11 @@ func CreateTestUser(t *testing.T, s Store, count int, admin bool) []*model.User 
 	}
 	userCount := len(users)
 
-	bcryptCost, err := strconv.Atoi(os.Getenv("BCRYPT_COST"))
-	if err != nil {
-		t.Fatal(err)
-	}
-
 	newUsers := []*model.User{}
 	for i := userCount; i < count+userCount; i++ {
 		encryptedPassword, err := bcrypt.GenerateFromPassword(
 			[]byte(fmt.Sprintf("test_password%d", i)),
-			bcryptCost,
+			10,
 		)
 		if err != nil {
 			t.Fatal(err)

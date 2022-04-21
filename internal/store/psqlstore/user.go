@@ -25,7 +25,7 @@ func NewSqlUserRepo(db *sql.DB, psql squirrel.StatementBuilderType) *SqlUserRepo
 
 func (r *SqlUserRepo) GetById(id int64) (*model.User, error) {
 	row := r.psql.Select("*").From("users").
-		Where("id = ?", id).RunWith(r.db).QueryRow()
+		Where("id = ?", id).QueryRow()
 	u, err := userFromRow(row)
 
 	if err != nil {
@@ -36,7 +36,7 @@ func (r *SqlUserRepo) GetById(id int64) (*model.User, error) {
 }
 
 func (r *SqlUserRepo) GetAll() ([]*model.User, error) {
-	rows, err := r.psql.Select("*").From("users").RunWith(r.db).Query()
+	rows, err := r.psql.Select("*").From("users").Query()
 
 	if err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func (r *SqlUserRepo) GetByEmail(email string) (*model.User, error) {
 	}
 
 	row := r.psql.Select("*").From("users").
-		Where("email = ?", email).RunWith(r.db).QueryRow()
+		Where("email = ?", email).QueryRow()
 	u, err := userFromRow(row)
 
 	if err != nil {
@@ -70,6 +70,29 @@ func (r *SqlUserRepo) GetByEmail(email string) (*model.User, error) {
 	}
 
 	return u, nil
+}
+
+func (r *SqlUserRepo) GetPage(page uint64) ([]*model.User, error) {
+	rows, err := r.psql.Select("*").From("users").Limit(store.PAGE_COUNT).Offset(page * store.PAGE_COUNT).Query()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	users := []*model.User{}
+	for rows.Next() {
+		u, err := userFromRow(rows)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, u)
+	}
+
+	if len(users) == 0 {
+		return nil, errors.New("insufficient user count")
+	}
+
+	return users, nil
 }
 
 func (r *SqlUserRepo) Insert(
@@ -103,7 +126,6 @@ func (r *SqlUserRepo) Insert(
 			u.LastLogin,
 			u.LastAction).
 		Suffix("RETURNING ID").
-		RunWith(r.db).
 		QueryRow().
 		Scan(&u.ID); err != nil {
 		return nil, err

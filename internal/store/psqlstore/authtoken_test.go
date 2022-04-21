@@ -6,7 +6,7 @@ import (
 	"github.com/anoobz/dualread/auth/internal/store"
 )
 
-func TestRepository_InsertRefreshToken(t *testing.T) {
+func TestStore_InsertRefreshToken(t *testing.T) {
 	s, dbTearUp := CreateTestStore(t)
 	defer dbTearUp("refresh_token", "users")
 
@@ -18,6 +18,13 @@ func TestStore_GetAllToken(t *testing.T) {
 	defer dbTearUp("refresh_token", "users")
 
 	store.TestStore_GetAllToken(t, s)
+}
+
+func TestStore_GetTokenPage(t *testing.T) {
+	s, dbTearUp := CreateTestStore(t)
+	defer dbTearUp("refresh_token", "users")
+
+	store.TestStore_GetTokenPage(t, s)
 }
 
 func TestStore_DeleteToken(t *testing.T) {

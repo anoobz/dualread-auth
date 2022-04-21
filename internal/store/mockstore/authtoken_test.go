@@ -18,6 +18,12 @@ func TestStore_GetAllToken(t *testing.T) {
 	store.TestStore_GetAllToken(t, s)
 }
 
+func TestStore_GetTokenPage(t *testing.T) {
+	s := CreateTestStore(t)
+
+	store.TestStore_GetTokenPage(t, s)
+}
+
 func TestStore_DeleteToken(t *testing.T) {
 	s := CreateTestStore(t)
 

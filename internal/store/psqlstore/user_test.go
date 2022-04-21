@@ -27,6 +27,13 @@ func TestStore_GetUserByEmail(t *testing.T) {
 	store.TestStore_GetUserByEmail(t, s)
 }
 
+func TestStore_GetUserPage(t *testing.T) {
+	s, dbTearUp := CreateTestStore(t)
+	defer dbTearUp("users")
+
+	store.TestStore_GetUserPage(t, s)
+}
+
 func TestStore_CreateUser(t *testing.T) {
 	s, dbTearUp := CreateTestStore(t)
 	defer dbTearUp("users")
