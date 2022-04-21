@@ -1,0 +1,14 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "dualread_dev",
+      "database": "dualread_dev",
+      "username": "dualread_dev",
+      "password": "dualread_dev"
+    }
+  ]
+}
