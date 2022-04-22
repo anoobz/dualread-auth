@@ -116,13 +116,13 @@ func TestServer_LoginSuccess(t *testing.T) {
 
 	testCases := []struct {
 		name           string
-		payload        map[string]string
+		payload        map[string]interface{}
 		admin          bool
 		expectedStatus int
 	}{
 		{
 			name: "non-admin",
-			payload: map[string]string{
+			payload: map[string]interface{}{
 				"email":    "test0@test.test",
 				"password": "test_password0",
 			},
@@ -131,7 +131,7 @@ func TestServer_LoginSuccess(t *testing.T) {
 		},
 		{
 			name: "non-admin",
-			payload: map[string]string{
+			payload: map[string]interface{}{
 				"email":    "test1@test.test",
 				"password": "test_password1",
 			},
@@ -178,13 +178,13 @@ func TestServer_LoginError(t *testing.T) {
 
 	testCases := []struct {
 		name             string
-		payload          map[string]string
+		payload          map[string]interface{}
 		expectedStatus   int
 		expectedErrorMsg string
 	}{
 		{
 			name: "empty email",
-			payload: map[string]string{
+			payload: map[string]interface{}{
 				"email":    "",
 				"password": "test_password0",
 			},
@@ -193,7 +193,7 @@ func TestServer_LoginError(t *testing.T) {
 		},
 		{
 			name: "invalid email",
-			payload: map[string]string{
+			payload: map[string]interface{}{
 				"email":    "invalid",
 				"password": "test_password0",
 			},
@@ -202,7 +202,7 @@ func TestServer_LoginError(t *testing.T) {
 		},
 		{
 			name: "empty password",
-			payload: map[string]string{
+			payload: map[string]interface{}{
 				"email":    "test0@test.test",
 				"password": "",
 			},
@@ -211,7 +211,7 @@ func TestServer_LoginError(t *testing.T) {
 		},
 		{
 			name: "user not found",
-			payload: map[string]string{
+			payload: map[string]interface{}{
 				"email":    "notFound@test.test",
 				"password": "test_password0",
 			},
@@ -251,7 +251,7 @@ func TestServer_RefreshAccessToken(t *testing.T) {
 	rec := httptest.NewRecorder()
 
 	// Login with the test user credential to recieve a refresh token
-	payload := map[string]string{
+	payload := map[string]interface{}{
 		"email":    "test0@test.test",
 		"password": "test_password0",
 	}
@@ -286,7 +286,7 @@ func TestServer_RefreshAccessToken_RefreshTokenDoesNotExist(t *testing.T) {
 	s.CreateTestUser(t, 1, false)
 
 	// Login with the test user credential to recieve a refresh token
-	payload := map[string]string{
+	payload := map[string]interface{}{
 		"email":    "test0@test.test",
 		"password": "test_password0",
 	}
@@ -324,7 +324,7 @@ func TestServer_RefreshAccessToken_RefreshTokenUserDoesNotExist(t *testing.T) {
 	s.CreateTestUser(t, 1, false)
 
 	// Login with the test user credential to recieve a refresh token
-	payload := map[string]string{
+	payload := map[string]interface{}{
 		"email":    "test0@test.test",
 		"password": "test_password0",
 	}

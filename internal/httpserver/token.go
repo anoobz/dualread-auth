@@ -48,6 +48,11 @@ func (s *server) validateAccessToken(next http.Handler) http.Handler {
 		}
 
 		claims := token.Claims.(jwt.MapClaims)
+		if !claims["admin"].(bool) {
+			s.error(w, r, http.StatusUnauthorized, errors.New("unauthorized"))
+			return
+		}
+
 		ctx := context.WithValue(r.Context(), ctxKey("claims"), claims)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})

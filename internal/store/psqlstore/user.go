@@ -37,7 +37,6 @@ func (r *SqlUserRepo) GetById(id int64) (*model.User, error) {
 
 func (r *SqlUserRepo) GetAll() ([]*model.User, error) {
 	rows, err := r.psql.Select("*").From("users").Query()
-
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +72,11 @@ func (r *SqlUserRepo) GetByEmail(email string) (*model.User, error) {
 }
 
 func (r *SqlUserRepo) GetPage(page uint64) ([]*model.User, error) {
-	rows, err := r.psql.Select("*").From("users").Limit(store.PAGE_COUNT).Offset(page * store.PAGE_COUNT).Query()
+	rows, err := r.psql.Select("*").
+		From("users").
+		Limit(store.PAGE_COUNT).
+		Offset(page * store.PAGE_COUNT).
+		Query()
 	if err != nil {
 		return nil, err
 	}

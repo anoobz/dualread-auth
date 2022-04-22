@@ -50,7 +50,7 @@ func (s *server) CreateTestRequest(
 	t *testing.T,
 	method string,
 	url string,
-	payload map[string]string,
+	payload map[string]interface{},
 ) *http.Request {
 	b := &bytes.Buffer{}
 	json.NewEncoder(b).Encode(payload)
@@ -142,7 +142,7 @@ func (s *server) LoginTestUser(t *testing.T, email string, password string) stri
 	rec := httptest.NewRecorder()
 	req := s.CreateTestRequest(
 		t, http.MethodPost, "/auth/login",
-		map[string]string{"email": email, "password": password},
+		map[string]interface{}{"email": email, "password": password},
 	)
 	s.ServeHTTP(rec, req)
 

@@ -1,6 +1,6 @@
 # Dualread authentification/authorization service
 
-This service provides authorization and authentification functionalities to services composing Dualread architecture.
+This service provides authorization and authentification functionalities to services composing Dualread architecture. This service is still under development.
 
 ## Service technologies
 

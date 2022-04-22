@@ -56,11 +56,10 @@ func (s *server) registerRoutes() {
 		Methods("Post")
 
 	s.routers.adminRouter.HandleFunc("/user/{id:[0-9]+}", s.getUser()).Methods("Get")
-	s.routers.adminRouter.HandleFunc("/user/{page:[0-9]+}", s.getUserPage()).
+	s.routers.adminRouter.HandleFunc("/user-page/{page:[0-9]+}", s.getUserPage()).
 		Methods("Get")
 	s.routers.adminRouter.HandleFunc("/user", s.getAllUsers()).Methods("Get")
-	s.routers.adminRouter.HandleFunc("/user/{id:[0-9]+}", s.insertUser()).
-		Methods("Post")
+	s.routers.adminRouter.HandleFunc("/user", s.insertUser()).Methods("Post")
 	s.routers.adminRouter.HandleFunc("/user/{id:[0-9]+}", s.updateUser()).
 		Methods("Post")
 	s.routers.adminRouter.HandleFunc("/user/{id:[0-9]+}", s.deleteUser()).

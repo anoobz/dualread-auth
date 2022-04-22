@@ -61,7 +61,11 @@ func (r *SqlAuthTokenRepo) GetAll() ([]*model.AuthToken, error) {
 }
 
 func (r *SqlAuthTokenRepo) GetPage(page uint64) ([]*model.AuthToken, error) {
-	rows, err := r.psql.Select("*").From("refresh_token").Limit(store.PAGE_COUNT).Offset(page * store.PAGE_COUNT).Query()
+	rows, err := r.psql.Select("*").
+		From("refresh_token").
+		Limit(store.PAGE_COUNT).
+		Offset(page * store.PAGE_COUNT).
+		Query()
 	if err != nil {
 		return nil, err
 	}

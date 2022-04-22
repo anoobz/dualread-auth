@@ -82,7 +82,7 @@ func TestStore_GetUserPage(t *testing.T, s Store) {
 			name:             "first page",
 			pageId:           0,
 			expectedErrorMsg: "",
-			expectedUsers:    testUsers[0 : 1*PAGE_COUNT],
+			expectedUsers:    testUsers[:1*PAGE_COUNT],
 		},
 		{
 			name:             "not full last page",

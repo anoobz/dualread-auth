@@ -1,7 +1,6 @@
 package store
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/anoobz/dualread/auth/internal/model"
@@ -14,7 +13,6 @@ func TestStore_InsertRefreshToken(t *testing.T, s Store) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println(len(testToken.TokenString))
 	err = s.AuthToken().Insert(testToken.Uuid, testToken.TokenString, testToken.Expires)
 	if err != nil {
 		t.Fatal(err)
@@ -54,7 +52,7 @@ func TestStore_GetTokenPage(t *testing.T, s Store) {
 			name:             "first page",
 			pageId:           0,
 			expectedErrorMsg: "",
-			expectedTokens:   testTokens[0 : 1*PAGE_COUNT],
+			expectedTokens:   testTokens[:1*PAGE_COUNT],
 		},
 		{
 			name:             "not full last page",

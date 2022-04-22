@@ -93,7 +93,6 @@ func (s *server) login() http.HandlerFunc {
 			s.error(w, r, http.StatusInternalServerError, err)
 			return
 		}
-
 		rt, err := model.NewRefreshToken(user)
 		if err != nil {
 			s.error(w, r, http.StatusInternalServerError, err)
@@ -125,16 +124,7 @@ func (s *server) refreshAccessToken() http.HandlerFunc {
 			return
 		}
 
-		claims, ok := jwtToken.Claims.(jwt.MapClaims)
-		if !ok {
-			s.error(
-				w,
-				r,
-				http.StatusInternalServerError,
-				errors.New("unable to extract claims"),
-			)
-			return
-		}
+		claims := jwtToken.Claims.(jwt.MapClaims)
 
 		refresh_uuid := fmt.Sprintf("%s", claims["refresh_uuid"])
 		_, err = s.store.AuthToken().GetById(refresh_uuid)
