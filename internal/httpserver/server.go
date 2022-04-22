@@ -65,7 +65,8 @@ func (s *server) registerRoutes() {
 	s.routers.adminRouter.HandleFunc("/user/{id:[0-9]+}", s.deleteUser()).
 		Methods("Delete")
 
-	s.routers.adminRouter.HandleFunc("/auth-token/{id}", s.getAuthToken()).Methods("Get")
+	s.routers.adminRouter.HandleFunc("/auth-token/{id}", s.getAuthToken()).
+		Methods("Get")
 	s.routers.adminRouter.HandleFunc("/auth-token-page/{page:[0-9]+}", s.getAuthTokenPage()).
 		Methods("Get")
 	s.routers.adminRouter.HandleFunc("/auth-token", s.getAllAuthTokens()).Methods("Get")
