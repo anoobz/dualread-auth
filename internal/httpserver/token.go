@@ -58,13 +58,8 @@ func (s *server) validateAccessToken(next http.Handler) http.Handler {
 	})
 }
 
-func (s *server) getRefreshToken(r *http.Request) (*jwt.Token, error) {
-	cookie, err := r.Cookie("refresh_token")
-	if err != nil {
-		return nil, err
-	}
-
-	token, err := jwt.Parse(cookie.Value, func(token *jwt.Token) (interface{}, error) {
+func getRefreshTokenClaims(tokenString string) (jwt.MapClaims, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
@@ -78,5 +73,7 @@ func (s *server) getRefreshToken(r *http.Request) (*jwt.Token, error) {
 		return nil, errors.New("invalid refresh token")
 	}
 
-	return token, nil
+	claims := token.Claims.(jwt.MapClaims)
+
+	return claims, nil
 }

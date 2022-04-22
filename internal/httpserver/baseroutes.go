@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/anoobz/dualread/auth/internal/model"
-	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -118,13 +117,16 @@ func (s *server) login() http.HandlerFunc {
 
 func (s *server) refreshAccessToken() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		jwtToken, err := s.getRefreshToken(r)
+		cookie, err := r.Cookie("refresh_token")
 		if err != nil {
 			s.error(w, r, http.StatusInternalServerError, err)
 			return
 		}
-
-		claims := jwtToken.Claims.(jwt.MapClaims)
+		claims, err := getRefreshTokenClaims(cookie.Value)
+		if err != nil {
+			s.error(w, r, http.StatusInternalServerError, err)
+			return
+		}
 
 		refresh_uuid := fmt.Sprintf("%s", claims["refresh_uuid"])
 		_, err = s.store.AuthToken().GetById(refresh_uuid)

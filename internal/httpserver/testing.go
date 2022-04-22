@@ -46,6 +46,12 @@ func (s *server) CreateTestUser(t *testing.T, count int, admin bool) []*model.Us
 	return store.CreateTestUser(t, s.store, count, admin)
 }
 
+func (s *server) CreateTestToken(t *testing.T, count int, user *model.User) []*model.AuthToken {
+	t.Helper()
+
+	return store.CreateTestToken(t, s.store, count, user)
+}
+
 func (s *server) CreateTestRequest(
 	t *testing.T,
 	method string,
